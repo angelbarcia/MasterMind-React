@@ -1,1 +1,1 @@
-# MasterMind-React
+# MasterMind
