@@ -1,11 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
+import ProgressBar from "./ProgressBar";
 
-const Counters = () => {
-    const [level, setLevel] = useState(3);
-    const [digits, setDigits] = useState(3);
-    const [lives, setLives] = useState(3);
-    const [attempts, setAttempts] = useState(10);
-    const [time, setTime] = useState(60);
+const Counters = ({level, digits, lives, attempts, time, startGame}) => { 
 
     return (
         <div className="container-fluid text-center">
@@ -28,12 +24,16 @@ const Counters = () => {
                             <p className="fs-5 d-flex ms-4 align-items-center mb-3 mt-2 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
                                 Attempts:<span className="ms-2" id="attempts">{attempts}</span>
                             </p>
-                        </li>
+                        </li><br/>
                         <li>
-                            <p className="fs-5 d-flex ms-4 align-items-center mb-3 mt-2 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-                                Time:<span className="ms-2" id="counter">{time}</span>
+                        <p className="fs-5 d-flex ms-4 align-items-center mb-3 mt-2 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                              Time:
                             </p>
+                            <br/>
+                            <ProgressBar max={60} value={time}></ProgressBar>                        
                         </li>
+                        <li><button className="btn btn-danger btn-sm mt-3 w-50 py-2" onClick={startGame} type="submit">Start!</button> </li>
+                        
                     </ul>
                 </div>
             </div>

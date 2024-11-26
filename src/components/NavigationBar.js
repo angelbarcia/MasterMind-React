@@ -26,22 +26,22 @@ function NavigationBar() {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="#" className="nav-link text-primary-emphasis">
+              <Link to="/" className="nav-link text-primary-emphasis">
                 Instructions
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="#" className="nav-link text-primary-emphasis">
+              <Link to="/" className="nav-link text-primary-emphasis">
                 Pricing
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="#" className="nav-link text-primary-emphasis">
+              <Link to="/" className="nav-link text-primary-emphasis">
                 FAQs
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="#" className="nav-link text-primary-emphasis">
+              <Link to="/" className="nav-link text-primary-emphasis">
                 About
               </Link>
             </li>
