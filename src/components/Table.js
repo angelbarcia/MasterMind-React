@@ -1,6 +1,6 @@
 import React from "react";
 
-const Table = () => {
+const Table = ({moves}) => {
     return (
     <div className="col-sm-2 ms-3 sidenav">
     <div className="container-fluid text-center">    
@@ -15,6 +15,7 @@ const Table = () => {
                             </tr>
                         </thead>
                     <tbody className="mt-2" id="moves">
+                    {moves.map((move)=><tr><td>{move.guess}</td><td>{move.message}</td></tr>)}
                     </tbody>
                     </table>        
                 </h2>
