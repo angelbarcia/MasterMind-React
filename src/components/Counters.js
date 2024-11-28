@@ -1,7 +1,7 @@
 import React from "react";
 import ProgressBar from "./ProgressBar";
 
-const Counters = ({level, digits, lives, attempts, time, startGame}) => { 
+const Counters = ({level, digits, lives, attempts, time, startGame, isDisabledStartBut, isProgressBarVisible}) => { 
 
     return (
         <div className="container-fluid text-center">
@@ -30,9 +30,9 @@ const Counters = ({level, digits, lives, attempts, time, startGame}) => {
                               Time:
                             </p>
                             <br/>
-                            <ProgressBar max={60} value={time}></ProgressBar>                        
+                           {isProgressBarVisible && <ProgressBar max={60} value={time}></ProgressBar>}                        
                         </li>
-                        <li><button className="btn btn-danger btn-sm mt-3 w-50 py-2" onClick={startGame} type="submit">Start!</button> </li>
+                        {isProgressBarVisible && <li><button className="btn btn-danger btn-sm mt-3 w-50 py-2" onClick={startGame} disabled={isDisabledStartBut} type="submit">Start!</button> </li>}
                         
                     </ul>
                 </div>
