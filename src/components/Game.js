@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Game = ({htmlFor, value, play, handleInput, isDisabled, isVisibleGameOver, level, isVisibleLength, isVisibleTimeUp, startTimer, isWon, secret, hide}) => {
+const Game = ({htmlFor, value, play, handleInput, isDisabled, isVisibleGameOver, level, isVisibleLength, isVisibleTimeUp, startTimer, isWon, secret, hide, isWonLevel10}) => {
 
   return (
   <div className="px-3 pt-3 my-3 text-center">
@@ -17,12 +17,12 @@ const Game = ({htmlFor, value, play, handleInput, isDisabled, isVisibleGameOver,
               {isVisibleGameOver && <button className="btn btn-success mb-5 w-100 py-2" onClick={() => window.location.reload()} id="restartButton">Restart!</button>}
               {isVisibleLength && <p>Insert a number with <strong>{level}</strong> characters.</p>} 
               {isVisibleTimeUp && <h1>Time's up!</h1>}
-              {isVisibleTimeUp && <p>The correct number was {secret}</p>}
+              {isVisibleTimeUp && <p>The correct number was {secret}.</p>}
               {isVisibleTimeUp && <button className="btn btn-success mb-5 w-100 py-2" onClick={startTimer} id="timesUpButton">Continue</button>}
               {isWon && <h1>You Win!</h1>} 
-              {isWon && <p>The correct number was {secret}.</p>}
+              {<p>The correct number was {secret}.</p>}
               {isWon && <button className="btn btn-success mb-5 w-100 py-2" onClick={hide} id="timesUpButton">Continue</button>}
-          
+              {isWonLevel10 && <h1>You Passed The Game!</h1>} 
       </div>
   </div>
 );

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import "./App.css";
 import Counters from "./Counters";
 import Game from "./Game";
@@ -7,13 +7,13 @@ import Footer from "./Footer";
 import NavigationBar from "./NavigationBar";
 import "bootstrap/dist/css/bootstrap.css";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import { useActionData } from "react-router-dom";
+
 
 const create_random_digit = (lower = 0, upper = 9) => {
   return Math.floor(Math.random() * (upper - lower + 1)) + lower;}
 
 const get_number = (digits) => {
-  let number = 0; // 3615
+  let number = 0; 
   for (const digit of digits) {
       number = 10 * number + digit;
   }
@@ -63,7 +63,8 @@ const evaluate = (guess, secret) => {
 }
 
 const App = () => {
-  const [time, setTime] = useState(60);
+  console.log("App is created");
+  const [time, setTime] = useState(10);
   const [attempts, setAttempts] = useState(10);
   const [lives, setLives] = useState(3);
   const [digits, setDigits] = useState(3);
@@ -79,46 +80,56 @@ const App = () => {
   const [isVisibleLength, setIsVisibleLength] = useState(false);
   const [isVisibleTimeUp, setisVisibleTimeUp] = useState(false);
   const [isWon, setisWon] = useState(false);
-  let timerInterval;
-  
+  const [isWonLevel10, setisWonLevel10] = useState (false);
+  const [timerInterval, setTimerInterval] = useState(0);
+
+  useEffect(() => {
+    return () => {
+      clearInterval(timerInterval);
+    }
+  }, []) 
 
   const startTimer = () => {
     clearInterval(timerInterval);
-    setTime(60);
+    setTime(10);
     setisWon(false);
     setIsProgressBarVisible(true)
     setisVisibleTimeUp(false)
     setisVisibleGameOver(false);
     setisDisabledStartBut(true);
     setIsDisabled(false);
-    timerInterval = setInterval(() => {
+    setTimerInterval (setInterval(() => {
+      console.log("Clock is ticking...");
       setTime((prevTime) => {
         if (prevTime < 1){
           setLives((prevLives) => {
-        if (prevLives < 1){
+        if (prevLives <= 1){
+          clearInterval(timerInterval);
           setisVisibleGameOver(true);
           setIsDisabled(true); 
-          setIsProgressBarVisible(false);
-          setTime(10000);
+          setIsProgressBarVisible(true);
+          setTime(10);
           setLevel(3); 
           setDigits(3);
           setAttempts(maxAttempts);
-          setLives(4); 
+          setLives(3); 
           setMoves([]);
          }
           
         else{
             setisVisibleTimeUp(true);
-            setIsProgressBarVisible(false);
+            setSecret(create_secret(level))
+            setMoves([]);
+            setIsProgressBarVisible(true);
             clearInterval(timerInterval);
-            setTime(60);
+            setTime(10);
             setAttempts(maxAttempts);
             return prevLives - 1;
           }
         });
         return 3;}
         return prevTime - 1;
-        });}, 1000);
+        });}, 1000));
     };
         
 
@@ -127,15 +138,24 @@ const play = () => {
   setisVisibleTimeUp(false);
   if(guess.toString().length == level){
     setIsVisibleLength(false);
-  setMoves([...moves, {guess, message:evaluate(guess, secret)}]) 
-    if(guess == secret){
+  setMoves([...moves, {guess, message:evaluate(guess, secret)}])   
+  if(guess == secret){
+    if(level === 10){
+     setisWonLevel10(true);
+     clearInterval(timerInterval);
+      return;
+    }
+     clearInterval(timerInterval);
       setLevel(level + 1);
       setDigits(digits + 1);
-      setAttempts(maxAttempts + 2);
+      setMaxAttempts(maxAttempts + 2);
       setMoves([]);
       setisWon(true);
-      setIsProgressBarVisible(false);
-      setTime(1000);
+      setIsProgressBarVisible(true);
+      setTime(10);
+      
+
+  
     }
     if(lives >= 1 && attempts >= 1){
       setAttempts(attempts - 1)
@@ -166,8 +186,9 @@ const play = () => {
   const hide = () => {
     setisWon(false)
     setTime(60)
-    setAttempts(maxAttempts + 2)
+    setAttempts(maxAttempts)
     setLives(lives + 1)
+    setSecret(create_secret(level))
     setIsProgressBarVisible(true)
   }
 
@@ -183,11 +204,11 @@ setGuess(e.target.value)
         <Counters time={time} digits={digits} lives={lives} attempts={attempts} level={level} startGame={startTimer} isDisabledStartBut={isDisabledStartBut} isProgressBarVisible={isProgressBarVisible}/>
       </div>
       <div className="col-12 col-md-8">
-        <Game play={play} handleInput={handleInput} value={guess} htmlFor={"guess"} isDisabled={isDisabled} isVisibleGameOver={isVisibleGameOver} level={level} isVisibleLength={isVisibleLength} isVisibleTimeUp={isVisibleTimeUp} startTimer={startTimer} isWon={isWon} secret={secret} hide={hide}/>
+        <Game play={play} handleInput={handleInput} value={guess} htmlFor={"guess"} isDisabled={isDisabled} isVisibleGameOver={isVisibleGameOver} level={level} isVisibleLength={isVisibleLength} isVisibleTimeUp={isVisibleTimeUp} startTimer={startTimer} isWon={isWon} secret={secret} hide={hide} isWonLevel10={isWonLevel10}/>
       </div>
-      <div className="col-12 col-md-2">
+    {moves.length > 0 && <div className="col-12 col-md-2">
         <Table moves={moves} />
-      </div>
+      </div>}  
     </div>
     <div className="row">
       <div className="col-12">
